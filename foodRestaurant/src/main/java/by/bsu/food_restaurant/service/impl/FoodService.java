@@ -48,9 +48,12 @@ public class FoodService implements IFoodService {
     @Override
     public Food findByTypeAndPrice(String foodType, Long price) throws ServiceException {
         Food food=null;
-        Long ft_id=checkType(foodType);
         try {
+            Long ft_id=checkTypeId(foodType);
+            if(ft_id!=null)
             food=foodDAO.read(ft_id,price);
+            else
+                throw new ServiceException("We don't have " + foodType );
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
@@ -69,7 +72,7 @@ public class FoodService implements IFoodService {
     }
 
     @Override
-    public List<Food> SeeAll() throws ServiceException {
+    public List<Food> seeAll() throws ServiceException {
         List<Food> food=null;
         try {
             food=foodDAO.readAll();
@@ -109,7 +112,7 @@ public class FoodService implements IFoodService {
     private Long checkType(String foodType) {
         Long id=null;
         try {
-            id=foodTypeDAO.findIdByType(foodType);
+            id=checkTypeId(foodType);
             if(id==null) {
                 FoodType ft=new FoodType();
                 ft.setFoodType(foodType);
@@ -119,5 +122,9 @@ public class FoodService implements IFoodService {
             e.printStackTrace();
         }
         return id;
+    }
+
+    private Long checkTypeId(String foodType) throws DAOException {
+        return foodTypeDAO.findIdByType(foodType);
     }
 }

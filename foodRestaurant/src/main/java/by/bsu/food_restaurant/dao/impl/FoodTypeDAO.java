@@ -171,7 +171,7 @@ public class FoodTypeDAO implements IFoodTypeDAO {
             if(rs.next())
                 ftId=rs.getLong(COLUMN_NAME_FT_ID);
         } catch (SQLException e) {
-            throw new DAOException(e + "\nCan not delete news with id : " + ftId);
+            throw new DAOException(e + "\nCan not delete Foodtype with id : " + ftId);
         } finally {
             DataSourceUtils.releaseConnection(connection, dataSource);
         }
